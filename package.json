@@ -1,0 +1,24 @@
+{
+  "name": "r3-db-c",
+  "version": "1.0.0",
+  "description": "the rbas db-c module. receive hash from PS for :-",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hk3cjames/r3-DB-c.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hk3cjames/r3-DB-c/issues"
+  },
+  "homepage": "https://github.com/hk3cjames/r3-DB-c#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1"
+  }
+}
