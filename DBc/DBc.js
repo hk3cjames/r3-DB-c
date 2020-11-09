@@ -21,10 +21,10 @@ async function intervalFunc() {
     for (i = 0; i < 1000; i++) {
         j = i + 1000;      
         k = "" + disp.dashboardDisp[i]
-        display = "" + j + ". " + k
-        document.getElementsByTagName("p")[i].textContent = "PS"+display.substring(1) ;
+        display = "" + j + " " + k
+        document.getElementsByTagName("p")[i].textContent = "-PS-"+display.substring(1) ;
     }
         
 
 }
-setInterval(intervalFunc, 1000);
+setInterval(intervalFunc, 1000); 

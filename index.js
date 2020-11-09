@@ -63,7 +63,7 @@ async function timeAdj() {
 app.post("/hashFile", (req, res) => {
   rxjson = req.body;
   // console.log("PS input json");
-  console.log(rxjson.psCycleCount)
+  // console.log(rxjson.psCycleCount)
   while (busyFlag == true) {
     setInterval(timeAdj, 10);
   }
@@ -71,7 +71,7 @@ app.post("/hashFile", (req, res) => {
   // console.log("tsId =" + rxjson.tsId) //==index of input hash
   // console.log("tsPointer =" + tsPointer)
   if (psPointer < 1000) {
-    console.log(psPointer)
+    // console.log(psPointer)
     psIn[psPointer] = rxjson.tsHash;
     psInCount[psPointer] = rxjson.psCycleCount
     addHash = addHash + rxjson.psCycleCount //addHash is the object of additional hash/tick
@@ -80,7 +80,7 @@ app.post("/hashFile", (req, res) => {
     psKey[psPointer] = crypto.createHash("sha256").update(j).digest("hex");
     result = "submitted";
   } else {
-    result = "fail: wrong TSname/ID";
+    result = "fail: wrong PSname/LinkHash";
   }
 
   resJson = {
@@ -102,9 +102,11 @@ async function intervalFunc() {
   nextChain = crypto.createHash("sha256").update(key).digest("hex"); // hash to RS
   dashboardDispHashCount = 0
   dashboardDisp = [] 
-  console.log(psInCount)    
+  // console.log(psInCount)    
   for (i=0; i<1000; i++){
     dashboardDisp[i] = psInCount[i]
+    psInCount[i] = 0
+
     // if (dashboardDisp[i] > 1000) {dashboardDisp[i]=dashboardDisp[i]-1000}
     dashboardDispHashCount = dashboardDispHashCount + dashboardDisp[i]
   }
@@ -129,9 +131,9 @@ app.post("/DBCdisplay", async (req, res) => {
   rxjson = req.body;
   // console.log("PS dashboard req");
   // console.log(rxjson);
-  while (busyFlag == true) {
-    setInterval(timeAdj, 10); // wait till PS display json is ready
-  }
+  // while (busyFlag == true) {
+  //   setInterval(timeAdj, 10); // wait till PS display json is ready
+  // }
   // console.log("PS response to TS");
   resJson = {
     cycle: systemTick,
@@ -140,7 +142,7 @@ app.post("/DBCdisplay", async (req, res) => {
     dashboardDisp,
   };
   res.json(resJson);
-  console.log(resJson);
+  // console.log(resJson);
 });
 
 setInterval(intervalFunc, 1000);
