@@ -22,7 +22,7 @@ async function intervalFunc() {
         j = i + 1000;      
         k = "" + disp.dashboardDisp[i]
         display = "" + j + " " + k
-        document.getElementsByTagName("p")[i].textContent = "-PS-"+display.substring(1) ;
+        document.getElementsByTagName("p")[i].textContent = "PS- "+display.substring(1) ;
     }
         
 

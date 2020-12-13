@@ -1,44 +1,42 @@
 // input hash from PS, upload to DB-t for querry and calculate checksum h256 to RS for sync
-const express = require("express");
-const cors = require('cors');
-var crypto = require("crypto");
-const app = express();
-app.use(cors())
-
-const fetch = require("node-fetch");
-const { stringify } = require("querystring");
-app.use(express.static("DBc"));
-app.use(express.json({ limit: "1mb" }));
-DBcID = "RBAS.RS1.DBc0";
-PSID = "RBAS.ps";
-var res1 = {};
-psKeyOriginal = [];
-psKey = [];
-psName = [];
-PsIn = [];
-dashboardDisp = [];
-
-systemTick = 0;
-addHash = 0
-nextChain = "";
-busyFlag = false;
-totalHashToDBcCount = 0;
-dashboardDispHashCount = 0;
-psIn = [];
-psInCount = []
-hashToDBt = [];
-hashToDBtTSname = [];
-for (i = 0; i < 1000; i++) {
-  k = 1000 + i;
-  j = PSID + k;
-  psInCount[i] = 0;
-  psName[i] = j; // j: name to gen initial hash key
-  psKey[i] = crypto.createHash("sha256").update(j).digest("hex");
-  psKeyOriginal[i] = psKey[i]; // initial key
-}
-console.log("default Key table")
-console.log(psName)
-console.log(psKey)
+  const express = require("express");
+  const cors = require('cors');
+  var crypto = require("crypto");
+  const app = express();
+  app.use(cors())
+  const fetch = require("node-fetch");
+  const { stringify } = require("querystring");
+  app.use(express.static("DBc"));
+  app.use(express.json({ limit: "1mb" }));
+  DBcID = "RBAS.RS1.DBc0";
+  PSID = "RBAS.ps";
+  var res1 = {};
+  psKeyOriginal = [];
+  psKey = [];
+  psName = [];
+  PsIn = [];
+  dashboardDisp = [];
+  systemTick = 0;
+  addHash = 0
+  nextChain = "";
+  busyFlag = false;
+  totalHashToDBcCount = 0;
+  dashboardDispHashCount = 0;
+  psIn = [];
+  psInCount = []
+  hashToDBt = [];
+  hashToDBtTSname = [];
+  for (i = 0; i < 1000; i++) {
+    k = 1000 + i;
+    j = PSID + k;
+    psInCount[i] = 0;
+    psName[i] = j; // j: name to gen initial hash key
+    psKey[i] = crypto.createHash("sha256").update(j).digest("hex");
+    psKeyOriginal[i] = psKey[i]; // initial key
+  }
+  console.log("default Key table")
+  console.log(psName)
+  console.log(psKey)
 
 app.listen(3200, () =>
   console.log("RS1 DB-c0 listening at port 3200" +
@@ -94,7 +92,6 @@ app.post("/hashFile", (req, res) => {
 );
 
 async function intervalFunc() {
-
   // console.log("tick = " + systemTick)
   systemTick++
   // console.log(addHash)
@@ -111,19 +108,20 @@ async function intervalFunc() {
     dashboardDispHashCount = dashboardDispHashCount + dashboardDisp[i]
   }
 
-  // const options = {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(data),
-  // };
-  // res1 = await fetch("http://127.0.0.1:3500/db_c", options) //to RS 
-  // const disp = await res1.json();
-  // console.log(disp)
-  // console.log(disp.status)
-  // result = disp.status
-  // existHash = disp.hash
+  const options = {
+    method: "POST",
+    timeout: 300,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+  res1 = await fetch("http://127.0.0.1:3500/db_c", options) //to RS 
+  const disp = await res1.json();
+  console.log(disp)
+  console.log(disp.status)
+  result = disp.status
+  existHash = disp.hash
 }
 
 app.post("/DBCdisplay", async (req, res) => {
@@ -144,5 +142,4 @@ app.post("/DBCdisplay", async (req, res) => {
   res.json(resJson);
   // console.log(resJson);
 });
-
 setInterval(intervalFunc, 1000);
